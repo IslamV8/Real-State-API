@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+
 const app = express();
-const serverless = require("serverless-http");
 
 app.use(express.json());
 
@@ -16,11 +16,12 @@ app.use("/api/properties", propertyRoutes);
 const dashboardRoutes = require("./routes/dashboardRoutes");
 app.use("/api/dashboard", dashboardRoutes);
 
-// Export app (بدون listen)
+// DB Connect (once only)
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log("DB Error:", err));
 
+// Local only
 if (require.main === module) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
@@ -28,5 +29,5 @@ if (require.main === module) {
   });
 }
 
-// ✅ This makes it usable in Vercel (serverless)
-module.exports.handler = serverless(app);
+// ✅ Export only the app (not wrapped)
+module.exports = app;
