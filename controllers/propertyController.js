@@ -20,6 +20,9 @@ exports.createProperty = async (req, res) => {
 
 
 exports.getAllProperties = async (req, res) => {
+  console.log("📥 [START] GET /api/properties");
+
+  const start = Date.now();
   const { city, type, minPrice, maxPrice, keyword, page = 1, limit = 10 } = req.query;
   let filter = {};
 
@@ -28,7 +31,7 @@ exports.getAllProperties = async (req, res) => {
   if (minPrice || maxPrice) {
     filter.price = {};
     if (minPrice) filter.price.$gte = minPrice;
-    if (maxPrice) filter.price.$gte = maxPrice;
+    if (maxPrice) filter.price.$lte = maxPrice;
   }
   if (keyword) {
     filter.title = { $regex: keyword, $options: "i" };
@@ -36,15 +39,21 @@ exports.getAllProperties = async (req, res) => {
 
   try {
     const properties = await Property.find(filter)
-      .populate("createdBy", "username")
+      // .populate("createdBy", "username") ← شيلها مؤقتًا لو مش مهمة
       .skip((page - 1) * limit)
-      .limit(Number(limit));
+      .limit(Number(limit))
+      .lean(); // ✅ أسرع بكتير في serverless
+
+    const end = Date.now();
+    console.log(`✅ [DONE] GET /api/properties in ${end - start}ms`);
 
     res.json(properties);
   } catch (err) {
+    console.error("❌ Error in getAllProperties:", err);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 exports.getProperty = async (req, res) => {
