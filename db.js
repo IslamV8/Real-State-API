@@ -7,12 +7,14 @@ const connectDB = async () => {
 
   try {
     await mongoose.connect(process.env.MONGO_URL, {
-      bufferCommands: false,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
     isConnected = true;
     console.log("✅ Connected to MongoDB");
   } catch (err) {
     console.error("❌ DB connection error:", err);
+    throw err;
   }
 };
 

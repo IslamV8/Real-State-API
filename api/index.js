@@ -4,10 +4,12 @@ const connectDB = require("../db");
 
 let handler;
 
-module.exports = async (req, res) => {
+const handlerFunction = async (req, res) => {
   if (!handler) {
     await connectDB();
     handler = serverless(app);
   }
   return handler(req, res);
 };
+
+module.exports = handlerFunction;
