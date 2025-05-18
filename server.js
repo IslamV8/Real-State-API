@@ -28,4 +28,4 @@ if (require.main === module) {
 }
 
 // ✅ This makes it usable in Vercel (serverless)
-module.exports = app;
+module.exports.handler = serverless(app);
