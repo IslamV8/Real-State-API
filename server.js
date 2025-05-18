@@ -1,23 +1,7 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
+const connectDB = require("./db"); // استيراد الاتصال
 const app = express();
-
-let isConnected = false;
-
-async function connectDB() {
-  if (isConnected) return;
-
-  try {
-    await mongoose.connect(process.env.MONGO_URL);
-    isConnected = true;
-    console.log("✅ Connected to MongoDB");
-  } catch (err) {
-    console.error("❌ MongoDB connection error:", err);
-  }
-}
-
-connectDB();
 
 app.use(express.json());
 
@@ -30,6 +14,9 @@ app.use("/api/properties", propertyRoutes);
 
 const dashboardRoutes = require("./routes/dashboardRoutes");
 app.use("/api/dashboard", dashboardRoutes);
+
+// الاتصال بقاعدة البيانات مرة واحدة
+connectDB();
 
 if (require.main === module) {
   const PORT = process.env.PORT || 5000;
