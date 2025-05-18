@@ -24,7 +24,7 @@ exports.getAllProperties = async (req, res) => {
 
   const start = Date.now();
   try {
-    const properties = await Property.find().limit(5).lean(); // 🛑 بدون populate أو filter
+    const properties = await Property.find().limit(5).lean(); // من غير filter أو populate
 
     const end = Date.now();
     console.log(`✅ DONE in ${end - start}ms`);
@@ -35,6 +35,7 @@ exports.getAllProperties = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 exports.getProperty = async (req, res) => {
