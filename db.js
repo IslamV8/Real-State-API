@@ -6,7 +6,7 @@ const connectDB = async () => {
   if (isConnected) return;
 
   try {
-    const db = await mongoose.connect(process.env.MONGO_URL, {
+    await mongoose.connect(process.env.MONGO_URL, {
       bufferCommands: false,
     });
     isConnected = true;
