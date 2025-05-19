@@ -1,26 +1,25 @@
-require("dotenv").config();
+// api/server.js
 const express = require("express");
-const mongoose = require("mongoose");
 const app = express();
 
+// 1) Body parser
 app.use(express.json());
 
-// ——— الراوتات ———
-const authRoutes = require("../routes/authRoutes.js");
-const propertyRoutes = require("../routes/propertyRoutes.js");
-const dashboardRoutes = require("../routes/dashboardRoutes.js");
-const commentRoutes = require("../routes/commentRoutes.js");
+// 2) الراوتات بدون بادئة "/api"
+const authRoutes      = require("../routes/authRoutes");
+const propertyRoutes  = require("../routes/propertyRoutes");
+const dashboardRoutes = require("../routes/dashboardRoutes");
+const commentRoutes   = require("../routes/commentRoutes");
 
-app.use("/api/auth", authRoutes);
-app.use("/api/properties", propertyRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api", commentRoutes);
+// ⚠️ هنا حمِّل الراوتات هكذا:
+app.use("/auth",      authRoutes);
+app.use("/properties", propertyRoutes);
+app.use("/dashboard",  dashboardRoutes);
+app.use("/comments",   commentRoutes);
+
+// 3) مسار افتراضي لكلِّ شيء آخر (404)
+app.use("*", (req, res) => {
+  res.status(404).json({ error: "Not Found" });
+});
 
 module.exports = app;
-
-if (require.main === module) {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running locally on http://localhost:${PORT}`);
-  });
-}
