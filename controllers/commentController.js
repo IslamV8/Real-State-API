@@ -21,7 +21,7 @@ exports.deleteComment = async (req, res) =>{
         const comment = await Comment.findById(req.params.commentId);
         if (!comment) return res.status(404).json({ error: "Comment not found" });
 
-        if (comment.user.toStrying() !== req.user.userId)
+        if (comment.user.toString() !== req.user.userId)
             return res.status(403).json({ error: "Not authorized" });
 
         await Comment.findByIdAndDelete(req.params.commentId);

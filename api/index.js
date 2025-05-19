@@ -2,7 +2,7 @@ const serverless = require("serverless-http");
 const app = require("../server");
 const connectDB = require("../db");
 
-// ❗ connectDB once before exporting the handler
+// ❗ هنا: لم ننتظر الاتصال
 connectDB();
 
 module.exports = serverless(app);
