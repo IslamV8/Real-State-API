@@ -14,11 +14,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/properties", propertyRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URL)
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
-
 // Export app only (for Vercel)
 module.exports = app;
 
