@@ -1,8 +1,17 @@
-const serverless = require("serverless-http");
-const app = require("../server");
-const connectDB = require("../db");
+// connectDB.js
+const mongoose = require("mongoose");
 
-module.exports = serverless(async (req, res) => {
-  await connectDB();        // الآن نضمن الاتصال قبل أي راوت
-  return app(req, res);
-});
+async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log("MongoDB connected");
+  } catch (err) {
+    console.error("DB connection error:", err);
+    throw err;
+  }
+}
+
+module.exports = connectDB;
