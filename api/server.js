@@ -6,10 +6,10 @@ const app = express();
 app.use(express.json());
 
 // ——— الراوتات ———
-const authRoutes = require("./routes/authRoutes.js");
-const propertyRoutes = require("./routes/propertyRoutes.js");
-const dashboardRoutes = require("./routes/dashboardRoutes.js");
-const commentRoutes = require("./routes/commentRoutes.js");
+const authRoutes = require("../routes/authRoutes.js");
+const propertyRoutes = require("../routes/propertyRoutes.js");
+const dashboardRoutes = require("../routes/dashboardRoutes.js");
+const commentRoutes = require("../routes/commentRoutes.js");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/properties", propertyRoutes);
