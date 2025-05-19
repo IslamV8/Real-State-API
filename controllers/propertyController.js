@@ -19,18 +19,19 @@ exports.createProperty = async (req, res) => {
 };
 
 exports.getAllProperties = async (req, res) => {
-  console.log("🔥 API HIT: /api/properties");
-  const start = Date.now();
+  console.log("🚀 HIT: /api/properties");
+
   try {
-    const properties = await Property.find().limit(5).lean(); // مؤقتًا بدون فلترة
-    const end = Date.now();
-    console.log(`✅ DONE in ${end - start}ms`);
+    const properties = await Property.find().limit(1).lean();
+    console.log("✅ PROPERTIES:", properties);
+
     res.status(200).json(properties);
   } catch (err) {
-    console.error("❌ Error fetching properties:", err);
+    console.error("❌ ERROR:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 exports.getProperty = async (req, res) => {
   try {
